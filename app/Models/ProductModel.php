@@ -13,5 +13,7 @@ use Mindk\Framework\Models\Model;
  */
 class ProductModel extends Model
 {
-    protected $tableName = 'products';
+    protected $tableName = 'post';
+    protected $sortStatus = 'vip';
+    protected $param = 'true';
 }

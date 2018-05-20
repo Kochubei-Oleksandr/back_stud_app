@@ -20,6 +20,16 @@ class ProductController
     function index(ProductModel $model){
 
         return $model->getList();
+
+    }
+
+    /**
+     * Products index page
+     */
+    function vip(ProductModel $model){
+
+        return $model->getSortList();
+
     }
 
     /**
@@ -47,6 +57,16 @@ class ProductController
      * Create product
      */
     function create(){
+        return "SUCCESS";
+        //@TODO: Implement this
+    }
+
+    function update(){
+        return "SUCCESS";
+        //@TODO: Implement this
+    }
+
+    function delete(){
         return "SUCCESS";
         //@TODO: Implement this
     }

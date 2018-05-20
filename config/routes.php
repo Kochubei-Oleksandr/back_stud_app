@@ -2,7 +2,7 @@
 
 return [
     'home' => [
-        'handler' => 'App\Controllers\Controller@home',
+        'handler' => 'App\Controllers\ProductController@vip',
         'path' => '/'
     ],
     'index' => [
@@ -20,9 +20,26 @@ return [
         'method' => 'POST',
         'acl' => ['user', 'admin']
     ],
+    'product_update' => [
+        'handler' => 'App\Controllers\ProductController@create',
+        'path' => '/product',
+        'method' => 'PUT',
+        'acl' => ['user', 'admin']
+    ],
+    'product_delete' => [
+        'handler' => 'App\Controllers\ProductController@create',
+        'path' => '/product',
+        'method' => 'DELETE',
+        'acl' => ['user', 'admin']
+    ],
     'login' => [
         'handler' => 'Mindk\Framework\Controllers\UserController@login',
         'path' => '/login',
+        'method' => 'POST',
+    ],
+    'register' => [
+        'handler' => 'Mindk\Framework\Controllers\UserController@register',
+        'path' => '/register',
         'method' => 'POST',
     ]
 ];

@@ -18,7 +18,8 @@ class Controller
         // Since it's just API, just return some data, e.g. version, stability status, etc:
         return [
             'status'    => 'Ok',
-            'version'   => '0.1 alpha'
+            'version'   => '0.1 alpha',
+            'test'   => '0.1 ii'
         ];
     }
 }
