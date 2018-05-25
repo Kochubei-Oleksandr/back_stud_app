@@ -41,5 +41,10 @@ return [
         'handler' => 'Mindk\Framework\Controllers\UserController@register',
         'path' => '/register',
         'method' => 'POST',
+    ],
+    'logout' => [
+        'handler' => 'Mindk\Framework\Controllers\UserController@logout',
+        'path' => '/logout',
+        'method' => 'POST',
     ]
 ];
