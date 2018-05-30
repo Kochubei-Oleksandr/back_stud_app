@@ -1,5 +1,7 @@
 <?php
 
+header('Content-Type:charset=utf-8');
+
 // Use Composer autoloader:
 $loader = require_once "../vendor/autoload.php";
 
