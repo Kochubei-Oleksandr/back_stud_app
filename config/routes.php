@@ -9,6 +9,14 @@ return [
         'handler' => 'App\Controllers\ProductController@index',
         'path' => '/products'
     ],
+    'categories_list' => [
+        'handler' => 'App\Controllers\CategoriesController@show',
+        'path' => '/categories-list'
+    ],
+    'city_list' => [
+        'handler' => 'App\Controllers\CityController@show',
+        'path' => '/city-list'
+    ],
     'product_show' => [
         'handler' => 'App\Controllers\ProductController@show',
         'path' => '/product/{id}',
