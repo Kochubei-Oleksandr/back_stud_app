@@ -14,7 +14,14 @@ use Mindk\Framework\Models\Model;
 class CategoriesModel extends Model
 {
     protected $tableName = 'post_category';
-    /* protected $sortStatusOne = 'vip';
-    protected $sortStatusTwo = 'moderate';
-    protected $param = 'true'; */
+     /**
+     * Get categories-list of records
+     *
+     * @return array
+     */
+    public function getListCategory() {
+        $sql = 'SELECT * FROM `' . $this->tableName . '` ';       
+        
+        return $this->dbo->setQuery($sql)->getList(get_class($this));
+    }
 }

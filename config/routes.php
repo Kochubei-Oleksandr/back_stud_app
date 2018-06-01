@@ -26,7 +26,7 @@ return [
         'handler' => 'App\Controllers\ProductController@create',
         'path' => '/product',
         'method' => 'POST',
-        'acl' => ['user', 'admin']
+        /* 'acl' => ['user', 'admin'] */
     ],
     'product_update' => [
         'handler' => 'App\Controllers\ProductController@create',

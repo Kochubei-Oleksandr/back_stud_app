@@ -13,8 +13,12 @@ use Mindk\Framework\Models\Model;
  */
 class CityModel extends Model
 {
-    protected $tableName = 'city';
-    /* protected $sortStatusOne = 'vip';
-    protected $sortStatusTwo = 'moderate';
-    protected $param = 'true'; */
+    public function getListCity() {
+
+        $sql = 'SELECT * , `city`.`city` AS `city` 
+        FROM `region` 
+        INNER JOIN `city` ON `city`.`id_region` = `region`.`id` ';       
+        
+        return $this->dbo->setQuery($sql)->getList(get_class($this));
+    }
 }

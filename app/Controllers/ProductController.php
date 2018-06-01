@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\ProductModel;
 use Mindk\Framework\Http\Request\Request;
 use Mindk\Framework\Exceptions\NotFoundException;
+use Mindk\Framework\Exceptions\AuthRequiredException;
 
 /**
  * Product controller
@@ -19,7 +20,7 @@ class ProductController
      */
     function index(ProductModel $model){
 
-        return $model->getList();
+        return $model->showAllProducts();
 
     }
 
@@ -28,7 +29,7 @@ class ProductController
      */
     function vip(ProductModel $model){
 
-        return $model->getSortList();
+        return $model->showVipProducts();
 
     }
 
@@ -56,7 +57,37 @@ class ProductController
     /**
      * Create product
      */
-    function create(){
+    function create(Request $request, ProductModel $model){
+
+        $token = $request->get('token', '', 'string');
+        if(empty($token)) {
+            throw new AuthRequiredException('token = null');
+        } else {
+            $user = $model->findUser($token);
+            if ($user->id_role_user == "2") {
+                $idUser = $user->id;
+                $idCity = $request->get('idCity', '', 'string');
+                $idPostCategory = $request->get('idPostCategory', '', 'string');
+                $idStatus = $request->get('idStatus', '', 'string');
+                $tel = $request->get('telephone', '', 'string');
+                $img = $request->get('img', '', 'string');
+                $text = $request->get('text', '', 'string');
+                $price = $request->get('price', '', 'string');
+                $title = $request->get('title', '', 'string');
+                $createdAt = date("Y-m-d H:i:s");
+                $updatedAt = $createdAt;
+
+                $savePost = $model->savePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $createdAt, $updatedAt);
+
+                return "SUCCESS";
+
+            } else {
+                throw new AuthRequiredException('Данный пользователь не может создать объявление');
+            }
+        }
+       
+
+
         return "SUCCESS";
         //@TODO: Implement this
     }
