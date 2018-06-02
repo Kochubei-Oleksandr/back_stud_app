@@ -78,27 +78,78 @@ class ProductController
                 $updatedAt = $createdAt;
 
                 $savePost = $model->savePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $createdAt, $updatedAt);
-
-                return "SUCCESS";
-
             } else {
                 throw new AuthRequiredException('Данный пользователь не может создать объявление');
             }
         }
-       
-
-
-        return "SUCCESS";
-        //@TODO: Implement this
+        if ($deletePost == true) {
+            return "Запись добавлена успешно";
+        }
     }
 
-    function update(){
-        return "SUCCESS";
-        //@TODO: Implement this
+    function update(Request $request, ProductModel $model){
+
+        $token = $request->get('token', '', 'string');
+        if(empty($token)) {
+            throw new AuthRequiredException('token = null'); 
+        } else {
+            $idPost = $request->get('idPost', '', 'string');
+            $user = $model->findUser($token);
+
+            if(empty($user)) {
+                throw new AuthRequiredException('Не можем найти пользователя в базе с таким токеном'); 
+            } 
+
+            $idUser = $user->id;
+            $post = $model->findPost($idUser, $idPost);
+
+            if ((!empty($post)) || ($user->id_role_user == "1")) {
+                $idCity = $request->get('idCity', '', 'string');
+                $idPostCategory = $request->get('idPostCategory', '', 'string');
+                $idStatus = $request->get('idStatus', '', 'string');
+                $tel = $request->get('telephone', '', 'string');
+                $img = $request->get('img', '', 'string');
+                $text = $request->get('text', '', 'string');
+                $price = $request->get('price', '', 'string');
+                $title = $request->get('title', '', 'string');
+                $createdAt = date("Y-m-d H:i:s");
+                $updatedAt = $createdAt;
+                $moderate = '0';
+
+                $savePost = $model->updatePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $createdAt, $updatedAt, $moderate, $idPost);
+            } else {
+                throw new AuthRequiredException('Данный пользователь не может редактировать эту запись');
+            }
+        }
+        if ($savePost == true) {
+            return "Запись обновлена успешно";
+        }
     }
 
-    function delete(){
-        return "SUCCESS";
-        //@TODO: Implement this
+    function delete(Request $request, ProductModel $model){
+
+        $token = $request->get('token', '', 'string');
+        if(empty($token)) {
+            throw new AuthRequiredException('token = null'); 
+        } else {
+            $idPost = $request->get('idPost', '', 'string');
+            $user = $model->findUser($token);
+
+            if(empty($user)) {
+                throw new AuthRequiredException('Не можем найти пользователя в базе с таким токеном'); 
+            } 
+
+            $idUser = $user->id;
+            $post = $model->findPost($idUser, $idPost);
+
+            if ((!empty($post)) || ($user->id_role_user == "1")) {
+                $deletePost = $model->deletePost($idPost);
+            } else {
+                throw new AuthRequiredException('Данный пользователь не может удалить эту запись');
+            }
+        }
+        if ($deletePost == true) {
+            return "Запись удалена успешно";
+        }
     }
 }

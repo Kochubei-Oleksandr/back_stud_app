@@ -29,16 +29,16 @@ return [
         /* 'acl' => ['user', 'admin'] */
     ],
     'product_update' => [
-        'handler' => 'App\Controllers\ProductController@create',
+        'handler' => 'App\Controllers\ProductController@update',
         'path' => '/product',
         'method' => 'PUT',
-        'acl' => ['user', 'admin']
+        /* 'acl' => ['user', 'admin'] */
     ],
     'product_delete' => [
-        'handler' => 'App\Controllers\ProductController@create',
+        'handler' => 'App\Controllers\ProductController@delete',
         'path' => '/product',
         'method' => 'DELETE',
-        'acl' => ['user', 'admin']
+        /* 'acl' => ['user', 'admin'] */
     ],
     'login' => [
         'handler' => 'Mindk\Framework\Controllers\UserController@login',
