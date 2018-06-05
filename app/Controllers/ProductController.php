@@ -114,9 +114,16 @@ class ProductController
                 $title = $request->get('title', '', 'string');
                 $createdAt = date("Y-m-d H:i:s");
                 $updatedAt = $createdAt;
-                $moderate = '0';
+                
+                if ($user->id_role_user == "1") {
+                    $moderate = $request->get('idModerate', '', 'string');
+                    $vipStatus = $request->get('idVip', '', 'string');
+                } else {
+                    $moderate = '0';
+                }
+                
 
-                $savePost = $model->updatePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $createdAt, $updatedAt, $moderate, $idPost);
+                $savePost = $model->updatePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $createdAt, $updatedAt, $moderate, $vipStatus, $idPost);
             } else {
                 throw new AuthRequiredException('Данный пользователь не может редактировать эту запись');
             }

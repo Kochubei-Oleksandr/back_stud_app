@@ -26,7 +26,7 @@ class ProductModel extends Model
      * @return array
      */
     public function showAllProducts() {
-        $sql = 'SELECT * FROM `' . $this->tableName . '` WHERE `'.$this->moder.'` = ' . $this->true . ' ';
+        $sql = 'SELECT * FROM `' . $this->tableName . '` ';
 
         return $this->dbo->setQuery($sql)->getList(get_class($this));
     }
@@ -60,9 +60,9 @@ class ProductModel extends Model
         return $this->dbo->setQuery($sql)->getResult($this);
     }
 
-    public function updatePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $createdAt, $updatedAt, $moderate, $idPost){
-        $sql = sprintf("UPDATE `%s` SET `id_user`='%s',`id_city`='%s',`id_post_category`='%s',`id_status`='%s',`telephone`='%s',`img`='%s',`text`='%s',`price`='%s',`title`='%s',`created_at`='%s',`updated_at`='%s', `moderate`='%s'
-        WHERE `id`= '%s'", $this->tableName, $idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $createdAt, $updatedAt, $moderate, $idPost);
+    public function updatePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $createdAt, $updatedAt, $moderate, $vipStatus, $idPost){
+        $sql = sprintf("UPDATE `%s` SET `id_user`='%s',`id_city`='%s',`id_post_category`='%s',`id_status`='%s',`telephone`='%s',`img`='%s',`text`='%s',`price`='%s',`title`='%s',`created_at`='%s',`updated_at`='%s', `moderate`='%s', `vip`='%s'
+        WHERE `id`= '%s'", $this->tableName, $idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $createdAt, $updatedAt, $moderate, $vipStatus, $idPost);
         return $this->dbo->setQuery($sql)->getSuccessStatement($this);
     }
 
