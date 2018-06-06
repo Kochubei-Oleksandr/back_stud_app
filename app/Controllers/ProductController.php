@@ -34,6 +34,50 @@ class ProductController
     }
 
     /**
+     * Products sort
+     */
+    function sort(Request $request, ProductModel $model){
+
+        $price = $request->get('price', '', 'string');
+        $date = $request->get('date', '', 'string');
+
+        if (!empty($price)) {
+            switch ($price) {
+                case 1:
+                    $deskPrice = 'DESC';
+                    break;
+                case 2:
+                    $deskPrice = 'ASC';
+                    break;
+            }
+        }
+
+        if (!empty($date)) {
+            switch ($date) {
+                case 1:
+                    $deskDate = 'DESC';
+                    break;
+                case 2:
+                    $deskDate = 'ASC';
+                    break;
+            }
+        }
+
+        if ( (!empty($price)) && (!empty($date)) ) {
+            return $model->sortPost($deskDate, $deskPrice);
+        } else {
+            
+            if ( ($price == 1) || ($price == 2) ) {
+                return $model->sortPricePost($deskPrice);
+            }
+
+            if ( ($date == 1) || ($date == 2) ) {
+                return $model->sortDatePost($deskDate);
+            }
+        }
+    }
+
+    /**
      * Single product page
      *
      * @param   ProductModel
@@ -112,8 +156,7 @@ class ProductController
                 $text = $request->get('text', '', 'string');
                 $price = $request->get('price', '', 'string');
                 $title = $request->get('title', '', 'string');
-                $createdAt = date("Y-m-d H:i:s");
-                $updatedAt = $createdAt;
+                $updatedAt = date("Y-m-d H:i:s");
                 
                 if ($user->id_role_user == "1") {
                     $moderate = $request->get('idModerate', '', 'string');
@@ -123,7 +166,7 @@ class ProductController
                 }
                 
 
-                $savePost = $model->updatePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $createdAt, $updatedAt, $moderate, $vipStatus, $idPost);
+                $savePost = $model->updatePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $updatedAt, $moderate, $vipStatus, $idPost);
             } else {
                 throw new AuthRequiredException('Данный пользователь не может редактировать эту запись');
             }

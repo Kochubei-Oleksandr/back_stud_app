@@ -54,5 +54,10 @@ return [
         'handler' => 'Mindk\Framework\Controllers\UserController@logout',
         'path' => '/logout',
         'method' => 'POST',
+    ],
+    'post_sort' => [
+        'handler' => 'App\Controllers\ProductController@sort',
+        'path' => '/sort',
+        'method' => 'POST',
     ]
 ];
