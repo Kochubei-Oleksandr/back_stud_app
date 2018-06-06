@@ -22,4 +22,13 @@ class CityController
         return $model->getListCity();
 
     }
+
+    /**
+     * Show list regions
+     */
+    function showRegion(CityModel $model){
+
+        return $model->getListRegion();
+
+    }
 }

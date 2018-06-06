@@ -17,6 +17,10 @@ return [
         'handler' => 'App\Controllers\CityController@show',
         'path' => '/city-list'
     ],
+    'region_list' => [
+        'handler' => 'App\Controllers\CityController@showRegion',
+        'path' => '/region-list'
+    ],
     'product_show' => [
         'handler' => 'App\Controllers\ProductController@show',
         'path' => '/product/{id}',
