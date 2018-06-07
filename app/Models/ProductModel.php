@@ -16,7 +16,6 @@ class ProductModel extends Model
     protected $tableName = 'post';
     protected $tableUser = 'users';
     protected $moder = 'moderate';
-    protected $vips = 'vip';
     protected $true = 'true';
 
 
@@ -28,18 +27,6 @@ class ProductModel extends Model
     public function showAllProducts() {
         $sql = 'SELECT * FROM `' . $this->tableName . '` ';
 
-        return $this->dbo->setQuery($sql)->getList(get_class($this));
-    }
-
-    /**
-     * Get vip-list of records
-     *
-     * @return array
-     */
-    public function showVipProducts() {
-        $sql = 'SELECT * FROM `' . $this->tableName . '` WHERE `'.$this->vips.'` = ' . $this->true . ' 
-            AND `'.$this->moder.'` = ' . $this->true . ' ';       
-        
         return $this->dbo->setQuery($sql)->getList(get_class($this));
     }
 
@@ -69,19 +56,5 @@ class ProductModel extends Model
     public function deletePost($idPost) {
         $sql = sprintf("DELETE FROM `%s` WHERE `id`='%s'", $this->tableName, $idPost);
         return $this->dbo->setQuery($sql)->getSuccessStatement($this);
-    }
-
-    public function sortPost($deskDate, $deskPrice) {
-        $sql = sprintf("SELECT * FROM `%s` ORDER BY `updated_at` %s, `price` %s ", $this->tableName, $deskDate, $deskPrice);
-        return $this->dbo->setQuery($sql)->getList(get_class($this));
-    }
-
-    public function sortDatePost($deskDate) {
-        $sql = sprintf("SELECT * FROM `%s` ORDER BY `updated_at` %s ", $this->tableName, $deskDate);
-        return $this->dbo->setQuery($sql)->getList(get_class($this));
-    }
-    public function sortPricePost($deskPrice) {
-        $sql = sprintf("SELECT * FROM `%s` ORDER BY `price` %s ", $this->tableName, $deskPrice);
-        return $this->dbo->setQuery($sql)->getList(get_class($this));
     }
 }

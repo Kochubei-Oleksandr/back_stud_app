@@ -1,10 +1,6 @@
 <?php
 
 return [
-    'home' => [
-        'handler' => 'App\Controllers\ProductController@vip',
-        'path' => '/'
-    ],
     'index' => [
         'handler' => 'App\Controllers\ProductController@index',
         'path' => '/products'
@@ -63,14 +59,19 @@ return [
         'path' => '/logout',
         'method' => 'POST',
     ],
-    'post_sort' => [
-        'handler' => 'App\Controllers\ProductController@sort',
-        'path' => '/sort',
-        'method' => 'POST',
-    ],
     'upload' => [
         'handler' => 'App\Controllers\ProductController@upload',
         'path' => '/upload_file',
         'method' => 'POST',
-    ]
+    ],
+    'post_sort' => [
+        'handler' => 'App\Controllers\SortController@sort',
+        'path' => '/sort',
+        'method' => 'POST',
+    ],
+    'post_sort_gategory' => [
+        'handler' => 'App\Controllers\SortController@sortCategory',
+        'path' => '/sort-category',
+        'method' => 'POST',
+    ],
 ];

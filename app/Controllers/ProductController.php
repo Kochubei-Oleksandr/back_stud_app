@@ -24,59 +24,6 @@ class ProductController
 
     }
 
-    /**
-     * Products index page
-     */
-    function vip(ProductModel $model){
-
-        return $model->showVipProducts();
-
-    }
-
-    /**
-     * Products sort
-     */
-    function sort(Request $request, ProductModel $model){
-
-        $price = $request->get('price', '', 'string');
-        $date = $request->get('date', '', 'string');
-
-        if (!empty($price)) {
-            switch ($price) {
-                case 1:
-                    $deskPrice = 'DESC';
-                    break;
-                case 2:
-                    $deskPrice = 'ASC';
-                    break;
-            }
-        }
-
-        if (!empty($date)) {
-            switch ($date) {
-                case 1:
-                    $deskDate = 'DESC';
-                    break;
-                case 2:
-                    $deskDate = 'ASC';
-                    break;
-            }
-        }
-
-        if ( (!empty($price)) && (!empty($date)) ) {
-            return $model->sortPost($deskDate, $deskPrice);
-        } else {
-            
-            if ( ($price == 1) || ($price == 2) ) {
-                return $model->sortPricePost($deskPrice);
-            }
-
-            if ( ($date == 1) || ($date == 2) ) {
-                return $model->sortDatePost($deskDate);
-            }
-        }
-    }
-
     function upload(Request $request, ProductModel $model) {
         
 		    
@@ -139,7 +86,7 @@ class ProductController
                 $text = $request->get('text', '', 'string');
                 $price = $request->get('price', '', 'string');
                 $title = $request->get('title', '', 'string');
-                $createdAt = date("Y-m-d H:i:s");
+                $createdAt = date("Y-m-d");
                 $updatedAt = $createdAt;
 
                 $savePost = $model->savePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $createdAt, $updatedAt);
@@ -180,7 +127,7 @@ class ProductController
                 $text = $request->get('text', '', 'string');
                 $price = $request->get('price', '', 'string');
                 $title = $request->get('title', '', 'string');
-                $updatedAt = date("Y-m-d H:i:s");
+                $updatedAt = date("Y-m-d");
                 
                 if ($user->id_role_user == "1") {
                     $moderate = $request->get('idModerate', '', 'string');
