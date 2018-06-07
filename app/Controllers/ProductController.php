@@ -77,6 +77,27 @@ class ProductController
         }
     }
 
+    function upload(Request $request, ProductModel $model) {
+        
+		    
+		$filename_doc = $_FILES; 
+        return $filename_doc; die;
+
+        
+		$ext_doc = substr($filename_doc, strpos($filename_doc,'.'), strlen($filename_doc)-1); 
+
+		if(!in_array($ext_doc,$allowed_filetypes_doc))
+		die('Данный тип файла не поддерживается.');
+		    
+		if(filesize($_FILES['somename']['tmp_name']) > $max_filesize_doc) 
+		die('Файл слишком большой.');
+		    
+		$path_doc = $upload_path_doc.time(void).$ext_doc;
+		if(copy($_FILES['document']['tmp_name'],$path_doc)) {
+		} else
+            echo 'При загрузке документа возникли ошибки. Попробуйте ещё раз.';
+        }
+
     /**
      * Single product page
      *

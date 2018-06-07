@@ -21,6 +21,10 @@ return [
         'handler' => 'App\Controllers\CityController@showRegion',
         'path' => '/region-list'
     ],
+    'state_list' => [
+        'handler' => 'App\Controllers\StatusController@showStatus',
+        'path' => '/status-list'
+    ],
     'product_show' => [
         'handler' => 'App\Controllers\ProductController@show',
         'path' => '/product/{id}',
@@ -62,6 +66,11 @@ return [
     'post_sort' => [
         'handler' => 'App\Controllers\ProductController@sort',
         'path' => '/sort',
+        'method' => 'POST',
+    ],
+    'upload' => [
+        'handler' => 'App\Controllers\ProductController@upload',
+        'path' => '/upload_file',
         'method' => 'POST',
     ]
 ];
