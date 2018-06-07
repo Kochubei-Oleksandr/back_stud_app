@@ -18,8 +18,6 @@ class ProductModel extends Model
     protected $moder = 'moderate';
     protected $vips = 'vip';
     protected $true = 'true';
-    protected $price = 'price';
-    protected $date = 'updated_at';
 
 
     /**

@@ -151,7 +151,10 @@ class ProductController
             return "Запись добавлена успешно";
         }
     }
-
+    
+    /**
+     * После редактирования поста сбрасываем ВИП и модерацию
+     */
     function update(Request $request, ProductModel $model){
 
         $token = $request->get('token', '', 'string');
@@ -184,6 +187,7 @@ class ProductController
                     $vipStatus = $request->get('idVip', '', 'string');
                 } else {
                     $moderate = '0';
+                    $vipStatus = '0';
                 }
                 
 
