@@ -61,9 +61,28 @@ class SortController
 
     function sortCategory(Request $request, SortModel $model){
 
-        $price = $request->get('price', '', 'string');
-        $date = $request->get('date', '', 'string');
+        $categories = $request->get('categories', '', 'something');
+        $categories = implode(",", $categories);
 
+        $cities = $request->get('cities', '', 'something');
+        $cities = implode(",", $cities);
 
+        if ( (!empty($categories)) && (!empty($cities)) ) {
+            return $model->sortAllPost($categories, $cities);
+        } else {
+            if (!empty($categories)){
+                return $model->sortCategoryPost($categories);
+            }
+            if (!empty($cities)){
+                return $model->sortCityPost($cities);
+            }
+        } 
+    }
+
+    function search(Request $request, SortModel $model){
+
+        $data = $request->get('data', '', 'string');
+
+        return $model->searchPost($data);
     }
 }

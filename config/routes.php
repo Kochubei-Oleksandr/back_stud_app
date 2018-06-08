@@ -74,4 +74,9 @@ return [
         'path' => '/sort-category',
         'method' => 'POST',
     ],
+    'search_post' => [
+        'handler' => 'App\Controllers\SortController@search',
+        'path' => '/search-post',
+        'method' => 'POST',
+    ],
 ];

@@ -29,4 +29,29 @@ class SortModel extends Model
         $sql = sprintf("SELECT * FROM `%s` ORDER BY `price` %s ", $this->tableName, $deskPrice);
         return $this->dbo->setQuery($sql)->getList(get_class($this));
     }
+
+    public function sortAllPost($categories, $cities) {
+        $sql = sprintf("SELECT * FROM `%s` WHERE `id_post_category` IN (%s) AND `id_city` IN (%s) ", $this->tableName, $categories, $cities);
+        
+        return $this->dbo->setQuery($sql)->getList(get_class($this));
+    }
+
+    public function sortCategoryPost($categories) {
+        $sql = sprintf("SELECT * FROM `%s` WHERE `id_post_category` IN (%s) ", $this->tableName, $categories);
+        
+        return $this->dbo->setQuery($sql)->getList(get_class($this));
+    }
+
+    public function sortCityPost($cities) {
+        $sql = sprintf("SELECT * FROM `%s` WHERE `id_city` IN (%s) ", $this->tableName, $cities);
+        
+        return $this->dbo->setQuery($sql)->getList(get_class($this));
+    }
+
+    public function searchPost($data) {
+        $sql = sprintf("SELECT * FROM `%s` WHERE `text` LIKE '%%%s%%'
+        OR `title` LIKE '%%%s%%' OR `price` LIKE '%%%s%%' ", $this->tableName, $data, $data, $data);
+        
+        return $this->dbo->setQuery($sql)->getList(get_class($this));
+    }
 }
