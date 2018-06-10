@@ -15,6 +15,8 @@ use Mindk\Framework\Exceptions\AuthRequiredException;
  */
 class ProductController
 {
+
+    protected $path = '../../frontend/static/img/';
     /**
      * Products index page
      */
@@ -51,24 +53,28 @@ class ProductController
 
     function upload(Request $request, ProductModel $model) {
         
+		$allowed_filetypes = array('.jpg','.jpeg','.gif','.bmp','.png'); 
+	    $max_filesize = 5242880; 
+        $upload_path = '../../frontend/static/img/'; 
+        $filename = $_FILES['fupload']['name']; 
+        $ext = substr($filename, strpos($filename,'.'), strlen($filename)-1);
+        $path = $this->path.time().$ext;
 		    
-		$filename_doc = $_FILES; 
-        return $filename_doc; die;
-
-        
-		$ext_doc = substr($filename_doc, strpos($filename_doc,'.'), strlen($filename_doc)-1); 
-
-		if(!in_array($ext_doc,$allowed_filetypes_doc))
-		die('Данный тип файла не поддерживается.');
-		    
-		if(filesize($_FILES['somename']['tmp_name']) > $max_filesize_doc) 
-		die('Файл слишком большой.');
-		    
-		$path_doc = $upload_path_doc.time(void).$ext_doc;
-		if(copy($_FILES['document']['tmp_name'],$path_doc)) {
-		} else
-            echo 'При загрузке документа возникли ошибки. Попробуйте ещё раз.';
+        if(!in_array($ext,$allowed_filetypes)) {
+            return ('Данный тип файла не поддерживается.');
         }
+        
+        if(($_FILES['fupload']['size']) > $max_filesize) {
+            return ('Файл слишком большой.');
+        }
+        
+        if(copy($_FILES['fupload']['tmp_name'], $path)) {
+            return 'OK';
+        } else {
+            return 'ERROR';
+        }
+    }
+
 
     /**
      * Single product page
@@ -107,7 +113,11 @@ class ProductController
                 $idPostCategory = $request->get('idPostCategory', '', 'string');
                 $idStatus = $request->get('idStatus', '', 'string');
                 $tel = $request->get('telephone', '', 'string');
-                $img = $request->get('img', '', 'string');
+                
+                $imgName = $request->get('img', '', 'string');
+                $ext = substr($imgName, strpos($imgName,'.'), strlen($imgName)-1); 
+                $img = $this->path.time().$ext;
+
                 $text = $request->get('text', '', 'string');
                 $price = $request->get('price', '', 'string');
                 $title = $request->get('title', '', 'string');
@@ -120,7 +130,7 @@ class ProductController
             }
         }
         if ($savePost == true) {
-            return "Запись добавлена успешно";
+            return "GOOOD Запись добавлена успешно";
         }
     }
     
