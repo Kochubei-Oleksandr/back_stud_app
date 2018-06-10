@@ -17,15 +17,17 @@ class ProductModel extends Model
     protected $tableUser = 'users';
     protected $moder = 'moderate';
     protected $true = 'true';
+    protected $count = 'id';
 
 
-    /**
-     * Get list of records
-     *
-     * @return array
-     */
-    public function showAllProducts() {
-        $sql = 'SELECT * FROM `' . $this->tableName . '` ';
+    public function countPosts() {
+        $sql = sprintf("SELECT count(`%s`) FROM `%s` LIMIT 1", $this->count, $this->tableName);
+
+        return $this->dbo->setQuery($sql)->getArray($this);
+    }
+
+    public function showAllProducts($start, $num) {
+        $sql = sprintf("SELECT * FROM `%s` LIMIT  %s, %s ", $this->tableName, $start, $num);
 
         return $this->dbo->setQuery($sql)->getList(get_class($this));
     }

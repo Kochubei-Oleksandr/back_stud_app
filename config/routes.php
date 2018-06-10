@@ -3,7 +3,8 @@
 return [
     'index' => [
         'handler' => 'App\Controllers\ProductController@index',
-        'path' => '/products'
+        'path' => '/products',
+        'method' => 'POST'
     ],
     'categories_list' => [
         'handler' => 'App\Controllers\CategoriesController@show',
@@ -78,5 +79,5 @@ return [
         'handler' => 'App\Controllers\SortController@search',
         'path' => '/search-post',
         'method' => 'POST',
-    ],
+    ]
 ];

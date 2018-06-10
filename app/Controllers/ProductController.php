@@ -18,9 +18,34 @@ class ProductController
     /**
      * Products index page
      */
-    function index(ProductModel $model){
+    function index(Request $request, ProductModel $model){
 
-        return $model->showAllProducts();
+        $page = $request->get('page', '', 'string');
+        $num = $request->get('per_page', '', 'string');
+
+        $posts = $model->countPosts();
+        $posts = $posts['0'];
+
+        //return $countPosts; die;
+
+        // Находим общее число страниц 
+        $total = intval(($posts - 1) / $num) + 1; 
+
+        // Определяем начало сообщений для текущей страницы 
+        $page = intval($page); 
+
+        // Если значение $page меньше единицы или отрицательно 
+        // переходим на первую страницу 
+        // А если слишком большое, то переходим на последнюю 
+        if(empty($page) or $page < 0) $page = 1; 
+        if($page > $total) $page = $total; 
+
+        // Вычисляем начиная к какого номера 
+        // следует выводить сообщения 
+        $start = $page * $num - $num;
+
+        // Выбираем $num сообщений начиная с номера $start 
+        return $model->showAllProducts($start, $num);
 
     }
 
