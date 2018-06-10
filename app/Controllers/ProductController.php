@@ -119,7 +119,7 @@ class ProductController
                 throw new AuthRequiredException('Данный пользователь не может создать объявление');
             }
         }
-        if ($deletePost == true) {
+        if ($savePost == true) {
             return "Запись добавлена успешно";
         }
     }
@@ -163,12 +163,12 @@ class ProductController
                 }
                 
 
-                $savePost = $model->updatePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $updatedAt, $moderate, $vipStatus, $idPost);
+                $updatePost = $model->updatePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $updatedAt, $moderate, $vipStatus, $idPost);
             } else {
                 throw new AuthRequiredException('Данный пользователь не может редактировать эту запись');
             }
         }
-        if ($savePost == true) {
+        if ($updatePost == true) {
             return "Запись обновлена успешно";
         }
     }
