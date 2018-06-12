@@ -16,49 +16,25 @@ use Mindk\Framework\Exceptions\AuthRequiredException;
 class ProductController
 {
 
-    protected $path = '../../frontend/static/img/';
     /**
-     * Products index page
+     * Products main page
      */
-    function index(Request $request, ProductModel $model){
+    function vipShow(ProductModel $model){
 
-        $page = $request->get('page', '', 'string');
-        $num = $request->get('per_page', '', 'string');
-
-        $posts = $model->countPosts();
-        $posts = $posts['0'];
-
-        //return $countPosts; die;
-
-        // Находим общее число страниц 
-        $total = intval(($posts - 1) / $num) + 1; 
-
-        // Определяем начало сообщений для текущей страницы 
-        $page = intval($page); 
-
-        // Если значение $page меньше единицы или отрицательно 
-        // переходим на первую страницу 
-        // А если слишком большое, то переходим на последнюю 
-        if(empty($page) or $page < 0) $page = 1; 
-        if($page > $total) $page = $total; 
-
-        // Вычисляем начиная к какого номера 
-        // следует выводить сообщения 
-        $start = $page * $num - $num;
-
-        // Выбираем $num сообщений начиная с номера $start 
-        return $model->showAllProducts($start, $num);
-
+        $count = '18'; //количество выводимых VIP постов
+        return $model->showVipPosts($count);
     }
 
     function upload(Request $request, ProductModel $model) {
         
 		$allowed_filetypes = array('.jpg','.jpeg','.gif','.bmp','.png'); 
-	    $max_filesize = 5242880; 
-        $upload_path = '../../frontend/static/img/'; 
+	    $max_filesize = 5242880;  
         $filename = $_FILES['fupload']['name']; 
         $ext = substr($filename, strpos($filename,'.'), strlen($filename)-1);
-        $path = $this->path.time().$ext;
+        $imgCleanName = basename($filename, $ext);
+        
+        $path = '../../frontend/static/img/';
+        $pathFull = $path.$imgCleanName.'-'.time().$ext;
 		    
         if(!in_array($ext,$allowed_filetypes)) {
             return ('Данный тип файла не поддерживается.');
@@ -68,7 +44,7 @@ class ProductController
             return ('Файл слишком большой.');
         }
         
-        if(copy($_FILES['fupload']['tmp_name'], $path)) {
+        if(copy($_FILES['fupload']['tmp_name'], $pathFull)) {
             return 'OK';
         } else {
             return 'ERROR';
@@ -87,7 +63,7 @@ class ProductController
      */
     function show(ProductModel $model, $id){
 
-        $item = $model->load($id);
+        $item = $model->showPost($id);
 
         // Check if record exists
         if(empty($item)) {
@@ -115,8 +91,11 @@ class ProductController
                 $tel = $request->get('telephone', '', 'string');
                 
                 $imgName = $request->get('img', '', 'string');
-                $ext = substr($imgName, strpos($imgName,'.'), strlen($imgName)-1); 
-                $img = $this->path.time().$ext;
+                $ext = substr($imgName, strpos($imgName,'.'), strlen($imgName)-1);
+                $imgCleanName = basename($imgName, $ext);
+                
+                $path = '/static/img/';
+                $img = $path.$imgCleanName.'-'.time().$ext;
 
                 $text = $request->get('text', '', 'string');
                 $price = $request->get('price', '', 'string');

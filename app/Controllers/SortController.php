@@ -24,6 +24,9 @@ class SortController
         $price = $request->get('price', '', 'string');
         $date = $request->get('date', '', 'string');
 
+        $deskDate = 'DESC';
+        $deskPrice = 'ASC';
+
         if (!empty($price)) {
             switch ($price) {
                 case 1:
@@ -45,44 +48,62 @@ class SortController
             }
         }
 
-        if ( (!empty($price)) && (!empty($date)) ) {
-            return $model->sortPost($deskPrice, $deskDate);
-        } else {
-    
-            if ( ($price == 1) || ($price == 2) ) {
-                return $model->sortPricePost($deskPrice);
-            }
-
-            if ( ($date == 1) || ($date == 2) ) {
-                return $model->sortDatePost($deskDate);
+        $urlPath = $request->get('path', '', 'string');
+        $isVip = "";
+        if (!empty($urlPath)) {
+            if (preg_match("/products\/\d+/", $urlPath)) {
+                $isVip = "0,1";
+            } else {
+                $isVip = "1";
             }
         }
-    }
-
-    function sortCategory(Request $request, SortModel $model){
 
         $categories = $request->get('categories', '', 'something');
-        $categories = implode(",", $categories);
-
-        $cities = $request->get('cities', '', 'something');
-        $cities = implode(",", $cities);
-
-        if ( (!empty($categories)) && (!empty($cities)) ) {
-            return $model->sortAllPost($categories, $cities);
+        if (!empty($categories)) {
+            $categories = implode(",", $categories);
         } else {
-            if (!empty($categories)){
-                return $model->sortCategoryPost($categories);
-            }
-            if (!empty($cities)){
-                return $model->sortCityPost($cities);
-            }
-        } 
-    }
-
-    function search(Request $request, SortModel $model){
+            $categories = "SELECT `id_post_category` FROM `post`";
+        }
+        
+        $cities = $request->get('cities', '', 'something');
+        if (!empty($cities)) {
+            $cities = implode(",", $cities);
+        } else {
+            $cities = "SELECT `id_city` FROM `post`";
+        }
 
         $data = $request->get('data', '', 'string');
+        if (empty($data)) {
+            $data = NULL;
+        }
 
-        return $model->searchPost($data);
+        $page = $request->get('page', '', 'string');
+        $num = '18';
+
+        $posts = $model->countPosts($isVip, $categories, $cities, $data, $deskPrice, $deskDate);
+        $posts = $posts['0'];
+
+        // Находим общее число страниц 
+        $total = intval(($posts - 1) / $num) + 1; 
+
+        // Определяем начало сообщений для текущей страницы 
+        $page = intval($page); 
+
+        // Если значение $page меньше единицы или отрицательно 
+        // переходим на первую страницу 
+        // А если слишком большое, то переходим на последнюю 
+        if(empty($page) or $page < 0) $page = 1; 
+        if($page > $total) $page = $total; 
+
+        // Вычисляем начиная к какого номера 
+        // следует выводить сообщения 
+        $start = $page * $num - $num;
+
+        $data = $model->sortPost($isVip, $categories, $cities, $data, $deskPrice, $deskDate, $start, $num);
+
+        return [
+            'count_post' => $total,
+            'data' => $data
+        ];
     }
 }

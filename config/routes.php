@@ -1,26 +1,30 @@
 <?php
 
 return [
-    'index' => [
-        'handler' => 'App\Controllers\ProductController@index',
-        'path' => '/products',
-        'method' => 'POST'
+    'vip_post' => [
+        'handler' => 'App\Controllers\ProductController@vipShow',
+        'path' => '/',
+        'method' => 'GET'
     ],
     'categories_list' => [
         'handler' => 'App\Controllers\CategoriesController@show',
-        'path' => '/categories-list'
+        'path' => '/categories-list',
+        'method' => 'GET'
     ],
     'city_list' => [
         'handler' => 'App\Controllers\CityController@show',
-        'path' => '/city-list'
+        'path' => '/city-list',
+        'method' => 'GET'
     ],
     'region_list' => [
         'handler' => 'App\Controllers\CityController@showRegion',
-        'path' => '/region-list'
+        'path' => '/region-list',
+        'method' => 'GET'
     ],
     'state_list' => [
         'handler' => 'App\Controllers\StatusController@showStatus',
-        'path' => '/status-list'
+        'path' => '/status-list',
+        'method' => 'GET'
     ],
     'product_show' => [
         'handler' => 'App\Controllers\ProductController@show',
@@ -60,7 +64,7 @@ return [
         'path' => '/logout',
         'method' => 'POST',
     ],
-    'upload' => [
+    'upload_img' => [
         'handler' => 'App\Controllers\ProductController@upload',
         'path' => '/upload_file',
         'method' => 'POST',
@@ -68,16 +72,6 @@ return [
     'post_sort' => [
         'handler' => 'App\Controllers\SortController@sort',
         'path' => '/sort',
-        'method' => 'POST',
-    ],
-    'post_sort_gategory' => [
-        'handler' => 'App\Controllers\SortController@sortCategory',
-        'path' => '/sort-category',
-        'method' => 'POST',
-    ],
-    'search_post' => [
-        'handler' => 'App\Controllers\SortController@search',
-        'path' => '/search-post',
         'method' => 'POST',
     ]
 ];

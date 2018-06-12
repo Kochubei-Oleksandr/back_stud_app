@@ -16,20 +16,28 @@ class ProductModel extends Model
     protected $tableName = 'post';
     protected $tableUser = 'users';
     protected $moder = 'moderate';
-    protected $true = 'true';
+    protected $vips = 'vip';
+    protected $true = '1';
     protected $count = 'id';
 
-
-    public function countPosts() {
-        $sql = sprintf("SELECT count(`%s`) FROM `%s` LIMIT 1", $this->count, $this->tableName);
-
-        return $this->dbo->setQuery($sql)->getArray($this);
-    }
-
-    public function showAllProducts($start, $num) {
-        $sql = sprintf("SELECT * FROM `%s` LIMIT  %s, %s ", $this->tableName, $start, $num);
+    public function showVipPosts($count) {
+        $sql = sprintf("SELECT * FROM `%s` WHERE `%s`='%s' AND `%s`='%s' ORDER BY `updated_at` DESC LIMIT %s", 
+        $this->tableName, $this->moder, $this->true, $this->vips, $this->true, $count);
 
         return $this->dbo->setQuery($sql)->getList(get_class($this));
+    }
+
+    public function showPost($id) {
+        $sql = sprintf("SELECT * FROM `%s` WHERE `%s`='%s' AND `%s`='%s' ", 
+        $this->tableName, $this->moder, $this->true, $this->count, $id);
+
+        return $this->dbo->setQuery($sql)->getList(get_class($this));
+    }
+
+    public function countPosts() {
+        $sql = sprintf("SELECT count(`%s`) FROM `%s` WHERE `%s`='%s' LIMIT 1", $this->count, $this->tableName, $this->moder, $this->true);
+
+        return $this->dbo->setQuery($sql)->getArray($this);
     }
 
     public function findUser($token) {
