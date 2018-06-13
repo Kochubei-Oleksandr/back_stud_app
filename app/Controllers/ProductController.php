@@ -42,7 +42,7 @@ class ProductController
         if(empty($token)) {
             throw new AuthRequiredException('token = null'); 
         } else {
-            $user = $model->findUser($token);
+            $user = $model->findByToken($token);
 
             if(empty($user)) {
                 throw new AuthRequiredException('Не можем найти пользователя в базе с таким токеном'); 
@@ -63,7 +63,7 @@ class ProductController
         if(empty($token)) {
             throw new AuthRequiredException('token = null');
         } else {
-            $user = $model->findUser($token);
+            $user = $model->findByToken($token);
             if ($user->id_role_user == "2") {
                 $idUser = $user->id;
                 $idCity = $request->get('idCity', '', 'string');
@@ -129,7 +129,7 @@ class ProductController
             throw new AuthRequiredException('token = null'); 
         } else {
             $idPost = $request->get('idPost', '', 'string');
-            $user = $model->findUser($token);
+            $user = $model->findByToken($token);
 
             if(empty($user)) {
                 throw new AuthRequiredException('Не можем найти пользователя в базе с таким токеном'); 
@@ -163,7 +163,7 @@ class ProductController
                     $vipStatus = '0';
                 }
 
-                $updatePost = $model->updatePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $updatedAt, $moderate, $vipStatus, $idPost);
+                $updatePost = $model->updatePost($idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $updatedAt, $moderate, $vipStatus, $idPost);
 
                 if (!empty($_FILES)) {
                     $allowed_filetypes = array('.jpg','.jpeg','.gif','.bmp','.png'); 
@@ -207,7 +207,7 @@ class ProductController
             throw new AuthRequiredException('token = null'); 
         } else {
             $idPost = $request->get('idPost', '', 'string');
-            $user = $model->findUser($token);
+            $user = $model->findByToken($token);
 
             if(empty($user)) {
                 throw new AuthRequiredException('Не можем найти пользователя в базе с таким токеном'); 

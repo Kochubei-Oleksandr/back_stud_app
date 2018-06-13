@@ -74,5 +74,10 @@ return [
         'handler' => 'App\Controllers\SortController@sort',
         'path' => '/sort',
         'method' => 'POST',
+    ],
+    'post_sort_admin' => [
+        'handler' => 'App\Controllers\SortController@sortAdmin',
+        'path' => '/sort-admin',
+        'method' => 'POST',
     ]
 ];
