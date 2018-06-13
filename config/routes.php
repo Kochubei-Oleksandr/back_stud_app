@@ -1,11 +1,6 @@
 <?php
 
 return [
-    'vip_post' => [
-        'handler' => 'App\Controllers\ProductController@vipShow',
-        'path' => '/',
-        'method' => 'GET'
-    ],
     'categories_list' => [
         'handler' => 'App\Controllers\CategoriesController@show',
         'path' => '/categories-list',
@@ -26,6 +21,11 @@ return [
         'path' => '/status-list',
         'method' => 'GET'
     ],
+    'show_my_posts' => [
+        'handler' => 'App\Controllers\ProductController@showMyPosts',
+        'path' => '/my-posts',
+        'method' => 'GET',
+    ],
     'product_show' => [
         'handler' => 'App\Controllers\ProductController@show',
         'path' => '/product/{id}',
@@ -39,10 +39,16 @@ return [
     ],
     'product_update' => [
         'handler' => 'App\Controllers\ProductController@update',
-        'path' => '/product',
-        'method' => 'PUT',
+        'path' => '/product-update',
+        'method' => 'POST',
         /* 'acl' => ['user', 'admin'] */
     ],
+    /* 'product_update' => [
+        'handler' => 'App\Controllers\ProductController@update',
+        'path' => '/product',
+        'method' => 'PUT',
+        'acl' => ['user', 'admin']
+    ], */
     'product_delete' => [
         'handler' => 'App\Controllers\ProductController@delete',
         'path' => '/product',
@@ -62,11 +68,6 @@ return [
     'logout' => [
         'handler' => 'Mindk\Framework\Controllers\UserController@logout',
         'path' => '/logout',
-        'method' => 'POST',
-    ],
-    'upload_img' => [
-        'handler' => 'App\Controllers\ProductController@upload',
-        'path' => '/upload_file',
         'method' => 'POST',
     ],
     'post_sort' => [

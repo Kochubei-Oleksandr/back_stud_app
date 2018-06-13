@@ -56,6 +56,8 @@ class SortController
             } else {
                 $isVip = "1";
             }
+        } else {
+            $isVip = "1";
         }
 
         $categories = $request->get('categories', '', 'something');
@@ -99,7 +101,20 @@ class SortController
         // следует выводить сообщения 
         $start = $page * $num - $num;
 
-        $data = $model->sortPost($isVip, $categories, $cities, $data, $deskPrice, $deskDate, $start, $num);
+        if ( (!empty($price)) && (!empty($date)) ) {
+            $data = $model->sortPost($isVip, $categories, $cities, $data, $deskPrice, $deskDate, $start, $num);
+        } elseif ( (!empty($price)) || (!empty($date)) ) {
+            if (!empty($price)){
+                $data = $model->sortPostPrice($isVip, $categories, $cities, $data, $deskPrice, $start, $num);
+            }
+            if (!empty($date)){
+                $data = $model->sortPostDate($isVip, $categories, $cities, $data, $deskDate, $start, $num);
+            }
+        } else {
+            $data = $model->sortPostDate($isVip, $categories, $cities, $data, $deskDate, $start, $num);
+        }
+
+        //$data = $model->sortPost($isVip, $categories, $cities, $data, $deskPrice, $deskDate, $start, $num);
 
         return [
             'count_post' => $total,

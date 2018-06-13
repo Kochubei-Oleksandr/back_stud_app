@@ -15,43 +15,6 @@ use Mindk\Framework\Exceptions\AuthRequiredException;
  */
 class ProductController
 {
-
-    /**
-     * Products main page
-     */
-    function vipShow(ProductModel $model){
-
-        $count = '18'; //количество выводимых VIP постов
-        return $model->showVipPosts($count);
-    }
-
-    function upload(Request $request, ProductModel $model) {
-        
-		$allowed_filetypes = array('.jpg','.jpeg','.gif','.bmp','.png'); 
-	    $max_filesize = 5242880;  
-        $filename = $_FILES['fupload']['name']; 
-        $ext = substr($filename, strpos($filename,'.'), strlen($filename)-1);
-        $imgCleanName = basename($filename, $ext);
-        
-        $path = '../../frontend/static/img/';
-        $pathFull = $path.$imgCleanName.'-'.time().$ext;
-		    
-        if(!in_array($ext,$allowed_filetypes)) {
-            return ('Данный тип файла не поддерживается.');
-        }
-        
-        if(($_FILES['fupload']['size']) > $max_filesize) {
-            return ('Файл слишком большой.');
-        }
-        
-        if(copy($_FILES['fupload']['tmp_name'], $pathFull)) {
-            return 'OK';
-        } else {
-            return 'ERROR';
-        }
-    }
-
-
     /**
      * Single product page
      *
@@ -71,6 +34,24 @@ class ProductController
         }
 
         return $item;
+    }
+
+    function showMyPosts(Request $request, ProductModel $model){
+
+        $token = $request->get('token', '', 'string');
+        if(empty($token)) {
+            throw new AuthRequiredException('token = null'); 
+        } else {
+            $user = $model->findUser($token);
+
+            if(empty($user)) {
+                throw new AuthRequiredException('Не можем найти пользователя в базе с таким токеном'); 
+            } 
+
+            $idUser = $user->id;
+
+            return $model->loadPosts($idUser);
+        }
     }
 
     /**
@@ -94,8 +75,7 @@ class ProductController
                 $ext = substr($imgName, strpos($imgName,'.'), strlen($imgName)-1);
                 $imgCleanName = basename($imgName, $ext);
                 
-                $path = '/static/img/';
-                $img = $path.$imgCleanName.'-'.time().$ext;
+                $img = '/static/img/'.$imgCleanName.'-'.time().$ext;
 
                 $text = $request->get('text', '', 'string');
                 $price = $request->get('price', '', 'string');
@@ -104,12 +84,38 @@ class ProductController
                 $updatedAt = $createdAt;
 
                 $savePost = $model->savePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $createdAt, $updatedAt);
+
+                if (!empty($_FILES)) {
+                    $allowed_filetypes = array('.jpg','.jpeg','.gif','.bmp','.png'); 
+                    $max_filesize = 5242880;  
+                    $filename = $_FILES['fupload']['name']; 
+                    $ext = substr($filename, strpos($filename,'.'), strlen($filename)-1);
+                    $imgCleanName = basename($filename, $ext);
+                    
+                    $path = '../../frontend/static/img/';
+                    $pathFull = $path.$imgCleanName.'-'.time().$ext;
+                        
+                    if(!in_array($ext,$allowed_filetypes)) {
+                        return ('Данный тип файла не поддерживается.');
+                    }
+                    
+                    if(($_FILES['fupload']['size']) > $max_filesize) {
+                        return ('Файл слишком большой.');
+                    }
+
+                    $addPhoto = copy($_FILES['fupload']['tmp_name'], $pathFull);
+                    
+                    if($addPhoto == false) {
+                        return 'При загрузке фото возникли ошибки =/';
+                    }
+                }
+
             } else {
                 throw new AuthRequiredException('Данный пользователь не может создать объявление');
             }
         }
         if ($savePost == true) {
-            return "GOOOD Запись добавлена успешно";
+            return "Запись добавлена успешно";
         }
     }
     
@@ -137,7 +143,13 @@ class ProductController
                 $idPostCategory = $request->get('idPostCategory', '', 'string');
                 $idStatus = $request->get('idStatus', '', 'string');
                 $tel = $request->get('telephone', '', 'string');
-                $img = $request->get('img', '', 'string');
+
+                $imgName = $request->get('img', '', 'string');
+                $ext = substr($imgName, strpos($imgName,'.'), strlen($imgName)-1);
+                $imgCleanName = basename($imgName, $ext);
+                
+                $img = '/static/img/'.$imgCleanName.'-'.time().$ext;
+
                 $text = $request->get('text', '', 'string');
                 $price = $request->get('price', '', 'string');
                 $title = $request->get('title', '', 'string');
@@ -150,9 +162,35 @@ class ProductController
                     $moderate = '0';
                     $vipStatus = '0';
                 }
-                
 
                 $updatePost = $model->updatePost($idUser, $idCity, $idPostCategory, $idStatus, $tel, $img, $text, $price, $title, $updatedAt, $moderate, $vipStatus, $idPost);
+
+                if (!empty($_FILES)) {
+                    $allowed_filetypes = array('.jpg','.jpeg','.gif','.bmp','.png'); 
+                    $max_filesize = 5242880;  
+                    $filename = $_FILES['fupload']['name']; 
+                    $ext = substr($filename, strpos($filename,'.'), strlen($filename)-1);
+                    $imgCleanName = basename($filename, $ext);
+                    
+                    $path = '../../frontend/static/img/';
+                    $pathFull = $path.$imgCleanName.'-'.time().$ext;
+                        
+                    if(!in_array($ext,$allowed_filetypes)) {
+                        return ('Данный тип файла не поддерживается.');
+                    }
+                    
+                    if(($_FILES['fupload']['size']) > $max_filesize) {
+                        return ('Файл слишком большой.');
+                    }
+
+                    unlink('../../frontend'.$post->img);
+                    $addPhoto = copy($_FILES['fupload']['tmp_name'], $pathFull);
+                    
+                    if($addPhoto == false) {
+                        return 'При загрузке фото возникли ошибки =/';
+                    }
+                }
+                
             } else {
                 throw new AuthRequiredException('Данный пользователь не может редактировать эту запись');
             }
@@ -179,6 +217,8 @@ class ProductController
             $post = $model->findPost($idUser, $idPost);
 
             if ((!empty($post)) || ($user->id_role_user == "1")) {
+                $path = '../../frontend';
+                unlink($path.$post->img);
                 $deletePost = $model->deletePost($idPost);
             } else {
                 throw new AuthRequiredException('Данный пользователь не может удалить эту запись');
